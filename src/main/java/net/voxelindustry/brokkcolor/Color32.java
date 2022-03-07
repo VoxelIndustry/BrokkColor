@@ -1,27 +1,12 @@
 package net.voxelindustry.brokkcolor;
 
-import java.util.Objects;
-
 import static java.lang.Integer.max;
 import static java.lang.Math.floor;
 import static java.lang.Math.min;
 
-public class Color32
+public record Color32(byte red, byte green, byte blue, byte alpha) implements ColorLike
 {
     public static final Color32 ALPHA = of(-128, -128, -128, -128);
-
-    private final byte red;
-    private final byte green;
-    private final byte blue;
-    private final byte alpha;
-
-    public Color32(byte red, byte green, byte blue, byte alpha)
-    {
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.alpha = alpha;
-    }
 
     public Color32 interpolate(Color32 other, float delta)
     {
@@ -56,49 +41,26 @@ public class Color32
         );
     }
 
-    public byte red()
+    @Override
+    public Color toColorFloat()
     {
-        return red;
-    }
-
-    public byte green()
-    {
-        return green;
-    }
-
-    public byte blue()
-    {
-        return blue;
-    }
-
-    public byte alpha()
-    {
-        return alpha;
+        return new Color(
+                ((int) red) + 128 / 256F,
+                ((int) green) + 128 / 256F,
+                ((int) blue) + 128 / 256F,
+                ((int) alpha) + 128 / 256F
+        );
     }
 
     @Override
-    public boolean equals(Object o)
+    public Color32 toColor32()
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Color32 color32 = (Color32) o;
-        return red == color32.red && green == color32.green && blue == color32.blue && alpha == color32.alpha;
+        return this;
     }
 
     @Override
-    public int hashCode()
+    public boolean isColorFloat()
     {
-        return Objects.hash(red, green, blue, alpha);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Color32{" +
-                "red=" + red +
-                ", green=" + green +
-                ", blue=" + blue +
-                ", alpha=" + alpha +
-                '}';
+        return false;
     }
 }

@@ -1,6 +1,6 @@
 package net.voxelindustry.brokkcolor;
 
-public class Color
+public class Color implements ColorLike
 {
     public static final Color ALPHA      = new Color(0, 0, 0, 0);
     public static final Color BLACK      = Color.fromHex("000000");
@@ -238,9 +238,22 @@ public class Color
         this.alpha = alpha;
     }
 
+    @Override
+    public Color toColorFloat()
+    {
+        return this;
+    }
+
+    @Override
     public Color32 toColor32()
     {
         return Color32.fromColor128(this);
+    }
+
+    @Override
+    public boolean isColorFloat()
+    {
+        return true;
     }
 
     @Override
