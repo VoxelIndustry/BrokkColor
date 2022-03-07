@@ -17,7 +17,7 @@ repositories {
     }
 }
 
-project.ext.jdkVersion = 8
+project.ext.jdkVersion = 17
 
 java {
     toolchain {
