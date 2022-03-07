@@ -19,11 +19,11 @@ public class Color
         return Color.fromHex(hex, 1);
     }
 
-    public static Color fromHex(String hex, final float alpha)
+    public static Color fromHex(String hex, float alpha)
     {
-        final Color rtn = new Color(0, 0, 0);
+        Color rtn = new Color(0, 0, 0);
 
-        final int padding = hex.startsWith("#") ? 1 : 0;
+        int padding = hex.startsWith("#") ? 1 : 0;
         rtn.red = Integer.parseInt(hex.substring(padding, 2 + padding), 16) / 255.0F;
         rtn.green = Integer.parseInt(hex.substring(2 + padding, 4 + padding), 16) / 255.0F;
         rtn.blue = Integer.parseInt(hex.substring(4 + padding, 6 + padding), 16) / 255.0F;
@@ -33,9 +33,9 @@ public class Color
 
     public String toHex()
     {
-        return "#" + String.format("%02X", (int) (this.red * 255)) +
-                String.format("%02X", (int) (this.green * 255)) +
-                String.format("%02X", (int) (this.blue * 255));
+        return "#" + String.format("%02X", (int) (red * 255)) +
+                String.format("%02X", (int) (green * 255)) +
+                String.format("%02X", (int) (blue * 255));
     }
 
     public static Color fromRGBInt(int rgb)
@@ -45,16 +45,18 @@ public class Color
 
     public static Color fromRGBAInt(int rgba)
     {
-        return new Color((rgba >> 24 & 0xFF) / 255f, (rgba >> 16 & 0xFF) / 255f, (rgba >> 8 & 0xFF) / 255f, (rgba &
-                0xFF) / 255f);
+        return new Color((rgba >> 24 & 0xFF) / 255f,
+                (rgba >> 16 & 0xFF) / 255f,
+                (rgba >> 8 & 0xFF) / 255f,
+                (rgba & 0xFF) / 255f);
     }
 
     public int toRGBInt()
     {
         int rtn = 0;
-        rtn |= (int) (this.getRed() * 255) << 16;
-        rtn |= (int) (this.getGreen() * 255) << 8;
-        rtn |= (int) (this.getBlue() * 255);
+        rtn |= (int) (getRed() * 255) << 16;
+        rtn |= (int) (getGreen() * 255) << 8;
+        rtn |= (int) (getBlue() * 255);
 
         return rtn;
     }
@@ -62,17 +64,12 @@ public class Color
     public int toRGBAInt()
     {
         int rtn = 0;
-        rtn |= (int) (this.getAlpha() * 255) << 24;
-        rtn |= (int) (this.getRed() * 255) << 16;
-        rtn |= (int) (this.getGreen() * 255) << 8;
-        rtn |= (int) (this.getBlue() * 255);
+        rtn |= (int) (getAlpha() * 255) << 24;
+        rtn |= (int) (getRed() * 255) << 16;
+        rtn |= (int) (getGreen() * 255) << 8;
+        rtn |= (int) (getBlue() * 255);
 
         return rtn;
-    }
-
-    public static Color from(final Color c)
-    {
-        return new Color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
     }
 
     private float red, blue, green, alpha;
@@ -90,92 +87,153 @@ public class Color
         this(red, green, blue, 1);
     }
 
+    public Color(Color other)
+    {
+        this(other.getRed(), other.getGreen(), other.getBlue(), other.getAlpha());
+    }
+
+    public Color()
+    {
+        this(0, 0, 0);
+    }
+
+    public Color set(Color other)
+    {
+        red = other.red;
+        green = other.green;
+        blue = other.blue;
+        alpha = other.alpha;
+        return this;
+    }
+
+    public Color copy()
+    {
+        return new Color(this);
+    }
+
     public Color addAlpha(float alpha)
     {
-        final Color rtn = Color.from(this);
-        rtn.setAlpha(alpha + rtn.getAlpha());
-        return rtn;
+        return addAlpha(alpha, this);
+    }
+
+    public Color addAlpha(float alpha, Color dest)
+    {
+        dest.set(this);
+        dest.alpha += alpha;
+
+        return dest;
     }
 
     public Color addGreen(float green)
     {
-        final Color rtn = Color.from(this);
-        rtn.setGreen(green + rtn.getGreen());
-        return rtn;
+        return addGreen(green, this);
+    }
+
+    public Color addGreen(float green, Color dest)
+    {
+        dest.set(this);
+        dest.green += green;
+
+        return dest;
     }
 
     public Color addBlue(float blue)
     {
-        final Color rtn = Color.from(this);
-        rtn.setBlue(blue + rtn.getBlue());
-        return rtn;
+        return addBlue(blue, this);
+    }
+
+    public Color addBlue(float blue, Color dest)
+    {
+        dest.set(this);
+        dest.blue += blue;
+
+        return dest;
     }
 
     public Color addRed(float red)
     {
-        final Color rtn = Color.from(this);
-        rtn.setRed(red + rtn.getRed());
-        return rtn;
+        return addRed(red, this);
+    }
+
+    public Color addRed(float red, Color dest)
+    {
+        dest.set(this);
+        dest.red += red;
+
+        return dest;
     }
 
     public Color shade(float shading)
     {
-        final Color rtn = Color.from(this);
-        rtn.setRed(rtn.getRed() - shading);
-        rtn.setGreen(rtn.getGreen() - shading);
-        rtn.setBlue(rtn.getBlue() - shading);
-        return rtn;
+        return shade(shading, this);
+    }
+
+    public Color shade(float shading, Color dest)
+    {
+        dest.setRed(getRed() - shading);
+        dest.setGreen(getGreen() - shading);
+        dest.setBlue(getBlue() - shading);
+        dest.setAlpha(getAlpha());
+
+        return dest;
     }
 
     public Color interpolate(Color other, float delta)
     {
-        if (delta >= 1)
-            return other;
-        if (delta <= 0)
-            return this;
+        return interpolate(other, delta, this);
+    }
 
-        return new Color(red + (other.red - red) * delta,
-                green + (other.green - green) * delta,
-                blue + (other.blue - blue) * delta,
-                alpha + (other.alpha - alpha) * delta);
+    public Color interpolate(Color other, float delta, Color dest)
+    {
+        if (delta >= 1)
+            return dest.set(other);
+        if (delta <= 0)
+            return dest.set(this);
+
+        dest.red = red + (other.red - red) * delta;
+        dest.green = green + (other.green - green) * delta;
+        dest.blue = blue + (other.blue - blue) * delta;
+        dest.alpha = alpha + (other.alpha - alpha) * delta;
+
+        return dest;
     }
 
     public float getRed()
     {
-        return this.red;
+        return red;
     }
 
     public float getBlue()
     {
-        return this.blue;
+        return blue;
     }
 
     public float getGreen()
     {
-        return this.green;
+        return green;
     }
 
     public float getAlpha()
     {
-        return this.alpha;
+        return alpha;
     }
 
-    public void setRed(final float red)
+    public void setRed(float red)
     {
         this.red = red;
     }
 
-    public void setBlue(final float blue)
+    public void setBlue(float blue)
     {
         this.blue = blue;
     }
 
-    public void setGreen(final float green)
+    public void setGreen(float green)
     {
         this.green = green;
     }
 
-    public void setAlpha(final float alpha)
+    public void setAlpha(float alpha)
     {
         this.alpha = alpha;
     }
@@ -188,8 +246,7 @@ public class Color
     @Override
     public String toString()
     {
-        return "Color [red=" + this.red + ", blue=" + this.blue + ", green=" + this.green + ", alpha=" + this.alpha
-                + "]";
+        return "Color [red=" + red + ", blue=" + blue + ", green=" + green + ", alpha=" + alpha + "]";
     }
 
     @Override
@@ -197,29 +254,29 @@ public class Color
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Float.floatToIntBits(this.alpha);
-        result = prime * result + Float.floatToIntBits(this.blue);
-        result = prime * result + Float.floatToIntBits(this.green);
-        result = prime * result + Float.floatToIntBits(this.red);
+        result = prime * result + Float.floatToIntBits(alpha);
+        result = prime * result + Float.floatToIntBits(blue);
+        result = prime * result + Float.floatToIntBits(green);
+        result = prime * result + Float.floatToIntBits(red);
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj)
+    public boolean equals(Object obj)
     {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
-        if (this.getClass() != obj.getClass())
+        if (getClass() != obj.getClass())
             return false;
-        final Color other = (Color) obj;
-        if (Float.floatToIntBits(this.alpha) != Float.floatToIntBits(other.alpha))
+        Color other = (Color) obj;
+        if (Float.floatToIntBits(alpha) != Float.floatToIntBits(other.alpha))
             return false;
-        if (Float.floatToIntBits(this.blue) != Float.floatToIntBits(other.blue))
+        if (Float.floatToIntBits(blue) != Float.floatToIntBits(other.blue))
             return false;
-        if (Float.floatToIntBits(this.green) != Float.floatToIntBits(other.green))
+        if (Float.floatToIntBits(green) != Float.floatToIntBits(other.green))
             return false;
-        return Float.floatToIntBits(this.red) == Float.floatToIntBits(other.red);
+        return Float.floatToIntBits(red) == Float.floatToIntBits(other.red);
     }
 }

@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id "org.sonarqube" version "2.7"
-    id "com.jfrog.artifactory" version "4.15.2"
+    id "com.jfrog.artifactory" version "4.26.1"
 }
 
 apply plugin: 'java-library'
@@ -9,11 +9,10 @@ apply plugin: "maven-publish"
 apply plugin: "com.jfrog.artifactory"
 
 repositories {
-    jcenter()
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven {
-        name = 'ourten'
+        name = 'voxelindustry'
         url = 'https://maven.ferenyr.info/artifactory/libs-release'
     }
 }

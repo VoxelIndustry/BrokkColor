@@ -18,9 +18,9 @@ public class Color1DGradient
         cachedColors = new Color[(int) (1 / precision) + 1];
 
         for (int step = 0; step < 1 / precision; step++)
-            cachedColors[step] = this.getInterpolated(frames, step * precision);
+            cachedColors[step] = getInterpolated(frames, step * precision);
 
-        cachedColors[cachedColors.length - 1] = this.getInterpolated(frames, 1);
+        cachedColors[cachedColors.length - 1] = getInterpolated(frames, 1);
     }
 
     public Color getValue(float delta)
@@ -32,7 +32,7 @@ public class Color1DGradient
             return cachedColors[(int) ((cachedColors.length - 1) / (1 / delta))];
         }
 
-        return this.getInterpolated(this.frames, delta);
+        return getInterpolated(frames, delta);
     }
 
     private Color getInterpolated(Map<Float, Color> frames, float delta)
@@ -43,7 +43,7 @@ public class Color1DGradient
         if (low.getValue().equals(high.getValue()))
             return low.getValue();
         return low.getValue().interpolate(high.getValue(),
-                (delta - low.getKey()) / (high.getKey() - low.getKey()));
+                (delta - low.getKey()) / (high.getKey() - low.getKey()), new Color());
     }
 
     Map.Entry<Float, Color> getLower(Map<Float, Color> frames, float current)
@@ -99,19 +99,19 @@ public class Color1DGradient
 
         public Builder()
         {
-            this.frames = new HashMap<>();
+            frames = new HashMap<>();
         }
 
         public Builder color(Color color, float delta)
         {
-            this.frames.put(delta, color);
+            frames.put(delta, color);
             return this;
         }
 
         public Builder precompute(float precision)
         {
             this.precision = precision;
-            this.precompute = true;
+            precompute = true;
             return this;
         }
 

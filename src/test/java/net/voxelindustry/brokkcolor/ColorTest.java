@@ -23,17 +23,17 @@ public class ColorTest
     @Test
     public void copy()
     {
-        assertThat(Color.from(Color.RED)).isEqualTo(Color.RED);
+        assertThat(Color.RED.copy()).isEqualTo(Color.RED);
     }
 
     @Test
     public void modifiers()
     {
-        assertThat(Color.RED.addGreen(0.1f).getGreen()).isEqualTo(0.1f);
-        assertThat(Color.BLUE.addRed(0.1f).getRed()).isEqualTo(0.1f);
-        assertThat(Color.RED.addBlue(0.1f).getBlue()).isEqualTo(0.1f);
-        assertThat(Color.BLACK.addAlpha(-0.1f).getAlpha()).isEqualTo(0.9f);
+        assertThat(Color.RED.addGreen(0.1F, new Color()).getGreen()).isEqualTo(0.1F);
+        assertThat(Color.BLUE.addRed(0.1F, new Color()).getRed()).isEqualTo(0.1F);
+        assertThat(Color.RED.addBlue(0.1F, new Color()).getBlue()).isEqualTo(0.1F);
+        assertThat(Color.BLACK.addAlpha(-0.1F, new Color()).getAlpha()).isEqualTo(0.9F);
 
-        assertThat(Color.WHITE.shade(0.1f)).isEqualTo(new Color(0.9f, 0.9f, 0.9f));
+        assertThat(Color.WHITE.shade(0.1F, new Color())).isEqualTo(new Color(0.9F, 0.9F, 0.9F));
     }
 }
