@@ -51,6 +51,15 @@ public class Color implements ColorLike
                 (rgba & 0xFF) / 255f);
     }
 
+    public static Color fromARGBInt(int argb)
+    {
+        return new Color(
+                (argb >> 16 & 0xFF) / 255f,
+                (argb >> 8 & 0xFF) / 255f,
+                (argb & 0xFF) / 255f,
+                (argb >> 24 & 0xFF) / 255f);
+    }
+
     public int toRGBInt()
     {
         int rtn = 0;
