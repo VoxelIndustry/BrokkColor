@@ -41,14 +41,55 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
         );
     }
 
+    public static Color32 fromHex(String hex)
+    {
+        return fromHex(hex, 255);
+    }
+
+    /**
+     * @param hex   string like #ABCD01
+     * @param alpha numeric component of range [0 ; 256[
+     * @return new Color32 instance from parsed hex
+     */
+    public static Color32 fromHex(String hex, int alpha)
+    {
+        var padding = hex.startsWith("#") ? 1 : 0;
+        var red = Integer.parseInt(hex.substring(padding, 2 + padding), 16);
+        var green = Integer.parseInt(hex.substring(2 + padding, 4 + padding), 16);
+        var blue = Integer.parseInt(hex.substring(4 + padding, 6 + padding), 16);
+        return Color32.of(red - 128, green - 128, blue - 128, alpha - 128);
+    }
+
+    public static Color32 fromRGBInt(int rgb)
+    {
+        return Color32.of((rgb >> 16 & 0xFF) - 128, (rgb >> 8 & 0xFF) - 128, (rgb & 0xFF) - 128, 127);
+    }
+
+    public static Color32 fromRGBAInt(int rgba)
+    {
+        return Color32.of((rgba >> 24 & 0xFF) - 128,
+                (rgba >> 16 & 0xFF) - 128,
+                (rgba >> 8 & 0xFF) - 128,
+                (rgba & 0xFF) - 128);
+    }
+
+    public static Color32 fromARGBInt(int argb)
+    {
+        return Color32.of(
+                (argb >> 16 & 0xFF) - 128,
+                (argb >> 8 & 0xFF) - 128,
+                (argb & 0xFF) - 128,
+                (argb >> 24 & 0xFF) - 128);
+    }
+
     @Override
     public Color toColorFloat()
     {
         return new Color(
-                ((int) red) + 128 / 256F,
-                ((int) green) + 128 / 256F,
-                ((int) blue) + 128 / 256F,
-                ((int) alpha) + 128 / 256F
+                (((int) red) + 128) / 255F,
+                (((int) green) + 128) / 255F,
+                (((int) blue) + 128) / 255F,
+                (((int) alpha) + 128) / 255F
         );
     }
 
@@ -62,5 +103,33 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
     public boolean isColorFloat()
     {
         return false;
+    }
+
+    public int toRGBInt()
+    {
+        int rtn = 0;
+        rtn |= (red + 128) << 16;
+        rtn |= (green + 128) << 8;
+        rtn |= blue + 128;
+
+        return rtn;
+    }
+
+    public int toRGBAInt()
+    {
+        int rtn = 0;
+        rtn |= (alpha + 128) << 24;
+        rtn |= (red + 128) << 16;
+        rtn |= (green + 128) << 8;
+        rtn |= blue + 128;
+
+        return rtn;
+    }
+
+    public String toHex()
+    {
+        return "#" + String.format("%02X", red + 128) +
+                String.format("%02X", green + 128) +
+                String.format("%02X", blue + 128);
     }
 }

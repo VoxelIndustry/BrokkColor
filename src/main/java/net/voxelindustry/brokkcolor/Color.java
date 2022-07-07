@@ -21,14 +21,14 @@ public class Color implements ColorLike
 
     public static Color fromHex(String hex, float alpha)
     {
-        Color rtn = new Color(0, 0, 0);
+        var result = new Color(0, 0, 0);
 
-        int padding = hex.startsWith("#") ? 1 : 0;
-        rtn.red = Integer.parseInt(hex.substring(padding, 2 + padding), 16) / 255.0F;
-        rtn.green = Integer.parseInt(hex.substring(2 + padding, 4 + padding), 16) / 255.0F;
-        rtn.blue = Integer.parseInt(hex.substring(4 + padding, 6 + padding), 16) / 255.0F;
-        rtn.alpha = alpha;
-        return rtn;
+        var padding = hex.startsWith("#") ? 1 : 0;
+        result.red = Integer.parseInt(hex.substring(padding, 2 + padding), 16) / 255.0F;
+        result.green = Integer.parseInt(hex.substring(2 + padding, 4 + padding), 16) / 255.0F;
+        result.blue = Integer.parseInt(hex.substring(4 + padding, 6 + padding), 16) / 255.0F;
+        result.alpha = alpha;
+        return result;
     }
 
     public String toHex()
