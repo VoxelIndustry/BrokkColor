@@ -65,7 +65,7 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
         return Color32.of((rgb >> 16 & 0xFF) - 128, (rgb >> 8 & 0xFF) - 128, (rgb & 0xFF) - 128, 127);
     }
 
-    public static Color32 fromRGBAInt(int rgba)
+    public static Color32 fromARGBInt(int rgba)
     {
         return Color32.of((rgba >> 24 & 0xFF) - 128,
                 (rgba >> 16 & 0xFF) - 128,
@@ -73,7 +73,7 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
                 (rgba & 0xFF) - 128);
     }
 
-    public static Color32 fromARGBInt(int argb)
+    public static Color32 fromRGBAInt(int argb)
     {
         return Color32.of(
                 (argb >> 16 & 0xFF) - 128,
@@ -117,6 +117,7 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
         return alpha == -128;
     }
 
+    @Override
     public int toRGBInt()
     {
         int rtn = 0;
@@ -127,6 +128,7 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
         return rtn;
     }
 
+    @Override
     public int toRGBAInt()
     {
         int rtn = 0;
@@ -138,6 +140,7 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
         return rtn;
     }
 
+    @Override
     public String toHex()
     {
         return "#" + String.format("%02X", red + 128) +

@@ -17,6 +17,13 @@ public interface ColorLike
      * @return whether this color cannot be displayed due to zero opacity
      */
     boolean isInvisible();
+
+    int toRGBInt();
+
+    int toRGBAInt();
+
+    String toHex();
+
     default boolean isColor32()
     {
         return !isColorFloat();

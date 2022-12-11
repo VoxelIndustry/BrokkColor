@@ -31,6 +31,7 @@ public class Color implements ColorLike
         return result;
     }
 
+    @Override
     public String toHex()
     {
         return "#" + String.format("%02X", (int) (red * 255)) +
@@ -43,7 +44,7 @@ public class Color implements ColorLike
         return new Color((rgb >> 16 & 0xFF) / 255f, (rgb >> 8 & 0xFF) / 255f, (rgb & 0xFF) / 255f);
     }
 
-    public static Color fromRGBAInt(int rgba)
+    public static Color fromARGBInt(int rgba)
     {
         return new Color((rgba >> 24 & 0xFF) / 255f,
                 (rgba >> 16 & 0xFF) / 255f,
@@ -51,7 +52,7 @@ public class Color implements ColorLike
                 (rgba & 0xFF) / 255f);
     }
 
-    public static Color fromARGBInt(int argb)
+    public static Color fromRGBAInt(int argb)
     {
         return new Color(
                 (argb >> 16 & 0xFF) / 255f,
@@ -60,6 +61,7 @@ public class Color implements ColorLike
                 (argb >> 24 & 0xFF) / 255f);
     }
 
+    @Override
     public int toRGBInt()
     {
         int rtn = 0;
@@ -70,6 +72,7 @@ public class Color implements ColorLike
         return rtn;
     }
 
+    @Override
     public int toRGBAInt()
     {
         int rtn = 0;
@@ -229,22 +232,66 @@ public class Color implements ColorLike
 
     public void setRed(float red)
     {
-        this.red = red;
+        setRed(red, this);
     }
 
     public void setBlue(float blue)
     {
-        this.blue = blue;
+        setBlue(blue, this);
     }
 
     public void setGreen(float green)
     {
-        this.green = green;
+        setGreen(green, this);
     }
 
     public void setAlpha(float alpha)
     {
-        this.alpha = alpha;
+        setAlpha(alpha, this);
+    }
+
+    public void setRed(float red, Color dest)
+    {
+        dest.set(this);
+        dest.red = red;
+    }
+
+    public void setBlue(float blue, Color dest)
+    {
+        dest.set(this);
+        dest.blue = blue;
+    }
+
+    public void setGreen(float green, Color dest)
+    {
+        dest.set(this);
+        dest.green = green;
+    }
+
+    public void setAlpha(float alpha, Color dest)
+    {
+        dest.set(this);
+        dest.alpha = alpha;
+    }
+
+    public void set(int index, float value)
+    {
+        set(index, value, this);
+    }
+
+    public void set(int index, float value, Color dest)
+    {
+        dest.set(this);
+
+        switch (index)
+        {
+            case 0 -> dest.red = value;
+            case 1 -> dest.green = value;
+            case 2 -> dest.blue = value;
+            case 3 -> dest.alpha = value;
+            default ->
+                    throw new IllegalArgumentException("ColorFloat is a 4 elements RGBA color representation. Element at index " + index + " is unknown");
+        }
     }
 
     @Override
