@@ -8,6 +8,15 @@ public interface ColorLike
 
     boolean isColorFloat();
 
+    /**
+     * @return whether this color is translucent or has any alpha component
+     */
+    boolean hasAlpha();
+
+    /**
+     * @return whether this color cannot be displayed due to zero opacity
+     */
+    boolean isInvisible();
     default boolean isColor32()
     {
         return !isColorFloat();

@@ -266,6 +266,18 @@ public class Color implements ColorLike
     }
 
     @Override
+    public boolean hasAlpha()
+    {
+        return alpha < 1;
+    }
+
+    @Override
+    public boolean isInvisible()
+    {
+        return alpha == 0;
+    }
+
+    @Override
     public String toString()
     {
         return "Color [red=" + red + ", blue=" + blue + ", green=" + green + ", alpha=" + alpha + "]";

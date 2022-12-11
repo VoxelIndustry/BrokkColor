@@ -105,6 +105,18 @@ public record Color32(byte red, byte green, byte blue, byte alpha) implements Co
         return false;
     }
 
+    @Override
+    public boolean hasAlpha()
+    {
+        return alpha < 127;
+    }
+
+    @Override
+    public boolean isInvisible()
+    {
+        return alpha == -128;
+    }
+
     public int toRGBInt()
     {
         int rtn = 0;
